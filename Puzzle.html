@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pl-PL">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+        rel = "stylesheet">
+     <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+     <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+    <style>
+
+    td{
+      width:83px;
+      height:112px;
+      border-style: solid;
+      border-color:black;
+    }
+    div{
+      width:83px;
+      height:112px;
+    }
+    #obrazek{
+      width:200px;
+      height:200px;
+    }
+    .cur{
+      opacity:0.5;
+    }
+
+    </style>
+</head>
+<body>
+
+<h1>Puzzle</h1>
+<img id='obrazek' src='a1.jpg'>
+<table id="tab1">
+</table>
+</br>
+<table id="tab2">
+</table>
+<div id="test"></div>
+<script>
+var iloscx=3;
+var ilosc=new Array(Math.pow(iloscx, 2));
+for (i=0;i<=Math.pow(iloscx, 2)-1;i++){
+ilosc[i]=i;
+}
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        x = a[i];
+        a[i] = a[j];
+        a[j] = x;
+    }
+    return a;
+}
+
+ilosc=shuffle(ilosc);
+for(var i=0;i<ilosc.length;i++){
+  test.innerHTML+=ilosc[i];
+}
+
+
+for(var i=0;i<iloscx;i++)
+$("#tab1").append('<tr></tr>')
+
+
+for(var i=0;i<iloscx;i++){
+$("#tab1 tr").append('<td><div></div></td>');
+}
+var divs=tab1.getElementsByTagName('div')
+for(var i=0;i<ilosc.length;i++){
+  $(divs[i]).addClass("k"+ilosc[i]);
+
+}
+
+
+for(var i=0;i<iloscx;i++)
+$("#tab2").append('<tr></tr>')
+
+for(var i=0;i<iloscx;i++)
+$("#tab2 tr").append('<td></td>');
+var tabs2=tab2.getElementsByTagName('td')
+for(var i=0;i<tabs2.length;i++){
+  $(tabs2[i]).addClass("K"+i);
+  $(tabs2[i]).attr("id",i);
+}
+var obrazeksrc = document.getElementById("obrazek").getAttribute('src');
+var ileproc=100/(iloscx-1);
+var x=0;
+var y=0;
+for(var i=0;i<ilosc.length;i++){
+$("#tab1 .k"+i).css({
+
+  "background-image":'url(' + obrazeksrc + ')',
+  "background-position": ileproc*x+"%"+" "+ileproc*y+"%",
+
+});
+x++;
+if(x%iloscx==0){
+  x=0;
+  y+=1;
+}
+}
+
+
+    for(var i=0;i<=ilosc.length;i++){
+       $( ".k"+i).draggable({
+          revert: true,
+          revertDuration: 0
+        });
+       $(".K"+i).droppable({
+         accept: function(d){
+           if(d.hasClass("k"+this.id))
+           return true;
+         },
+         drop: function( event, ui ) {
+        $(this).append(ui.draggable);
+        f();
+                  }
+         })
+   }
+   function f(){
+     if($("#tab1 div").length == 0){
+       alert("Wygranko");
+     }
+
+}
+f()
+
+</script>
+
+</body>
+</html>
